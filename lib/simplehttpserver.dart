@@ -13,8 +13,8 @@ class SimpleHttp {
     this.routes.add(EngineRoute().CreateRoute('POST', route, callback));
   }
 
-  Future Function(HttpRequest) RouteNotFound = (HttpRequest event) async {
-    event.response.write({'route': 'Not Found'});
+  Future Function(HttpRequest event) RouteNotFound = (HttpRequest event) async {
+    event.response.write({'err': 'route not Found'});
     event.response.close();
   };
 
@@ -37,6 +37,8 @@ class SimpleHttp {
       if (index == -1) {
         await this.RouteNotFound(event);
       }
+
+      // Route found
       if (index != -1) {
         await this.routes[index].callback(event);
       }
@@ -65,23 +67,23 @@ class EngineRoute {
       return false;
     }
     // Not valid path
-    if (!this.validPath(event)) {
+    if (!this._validPath(event)) {
       return false;
     }
 
     return true;
   }
 
-  bool validPath(HttpRequest event) {
-    var listPt = _route.split('/').where((element) => element != "");
+  bool _validPath(HttpRequest event) {
+    final listPt = _route.split('/').where((element) => element != "");
 
-    var request =
+    final request =
         event.requestedUri.pathSegments.where((element) => element != "");
 
-    return compareSegmentsString(listPt.toList(), request.toList());
+    return _compareSegmentsString(listPt.toList(), request.toList());
   }
 
-  bool compareSegmentsString(List<String> original, List<String> request) {
+  bool _compareSegmentsString(List<String> original, List<String> request) {
     // Not more sub routes
     if (original.length == 0 && request.length == 0) {
       return true;
@@ -98,7 +100,7 @@ class EngineRoute {
 
     // same route
     if (original.first == request.first) {
-      return compareSegmentsString(
+      return _compareSegmentsString(
           original.skip(1).toList(), request.skip(1).toList());
     }
 
