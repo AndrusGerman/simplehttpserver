@@ -1,0 +1,14 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "simplehttpserver",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "2.10"
+    }
+  ],
+  "generated": "2022-05-14T18:23:37.144056Z",
+  "generator": "pub",
+  "generatorVersion": "2.17.0"
+}
